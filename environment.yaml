@@ -1,0 +1,7 @@
+name: crypto_predictor
+dependencies:
+  - pandas
+  - numpy
+  - pytest
+  - pip:
+    - e
