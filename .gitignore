@@ -1,0 +1,4 @@
+__pycache__
+.pytest_cache
+data
+crypto_predictor.egg-info
