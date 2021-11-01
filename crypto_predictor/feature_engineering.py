@@ -6,6 +6,8 @@ from numpy import ndarray, concatenate, zeros, nan
 
 from pandas import DataFrame, read_csv, concat
 
+from sklearn.model_selection import train_test_split
+
 WINDOW_SIZE = 10
 
 def main() -> None:
@@ -20,7 +22,12 @@ def main() -> None:
         cryptos_features_df.append(features_df)
 
     cryptos_features_df = consolidate(cryptos_features_df)
-    save_features(cryptos_features_df)
+    
+    set_dfs = split_in_train_test_val(cryptos_features_df)
+    set_nms = ['train', 'test', 'val']
+
+    for set_nm, set_df in zip(set_nms, set_dfs):
+        save_features(set_df, set_nm)
 
 
 def get_cryptos_symbol() -> List[str]:
@@ -84,9 +91,16 @@ def get_rolled(values: ndarray, offset:int) -> ndarray:
 
     return rolled_values
 
-def save_features(df:DataFrame) -> None:
+def split_in_train_test_val(df:DataFrame) -> List[DataFrame]:
+
+    train_df, test_val_df = train_test_split(df, test_size=0.3)
+    test_df, val_df = train_test_split(test_val_df, test_size=0.5)
+
+    return [train_df, test_df, val_df]
+
+def save_features(df:DataFrame, set_nm:str) -> None:
     
-    df.to_csv('./data/feature_store/feature_store.csv', index=False)
+    df.to_csv('./data/feature_store/%s.csv' % set_nm, index=False)
 
 
 if __name__ == '__main__':
