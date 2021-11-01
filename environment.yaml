@@ -2,6 +2,7 @@ name: crypto_predictor
 dependencies:
   - pandas
   - numpy
+  - scikit-learn
   - pytest
   - pip:
     - e
